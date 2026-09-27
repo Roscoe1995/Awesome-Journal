@@ -1,0 +1,28 @@
+name: Plugin security scan
+
+# HOL AI Plugin Scanner, recommended by the awesome-ai-plugins listing
+# (hashgraph-online/awesome-ai-plugins#474). Maintainer-owned scanner CI lifts
+# the 10% trust-score reduction the HOL Registry applies without it.
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - name: Scan plugin marketplace
+        uses: hashgraph-online/ai-plugin-scanner-action@9595abbd8f48e618f45414e8b78e870371f715d4 # v1.2.712
+        with:
+          plugin_dir: "."
+          min_score: 80
+          fail_on_severity: high
